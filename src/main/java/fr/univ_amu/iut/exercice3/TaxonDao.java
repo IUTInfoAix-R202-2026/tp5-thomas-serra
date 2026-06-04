@@ -68,7 +68,7 @@ public class TaxonDao {
         }
       }
     } catch (SQLException e) {
-      throw new DataAccessException("message", e);
+      throw new DataAccessException("Impossible de récuperer le taxon", e);
     }
 
     return resultat;
