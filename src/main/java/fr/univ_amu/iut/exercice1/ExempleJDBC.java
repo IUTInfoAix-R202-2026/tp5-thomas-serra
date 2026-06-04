@@ -33,7 +33,8 @@ public class ExempleJDBC {
   public static final String URL_MEMOIRE = "jdbc:sqlite::memory:";
 
   public static void main(String[] args) throws SQLException {
-    // Étape 2 : ouvrir la connexion (try-with-resources => fermeture automatique, étape 5).
+    // Étape 2 : ouvrir la connexion (try-with-resources => fermeture automatique,
+    // étape 5).
     try (Connection connexion = DriverManager.getConnection(URL_MEMOIRE)) {
       creerEtRemplirTable(connexion);
 
@@ -72,7 +73,12 @@ public class ExempleJDBC {
     // 2. Exécuter le SELECT : st.executeQuery("SELECT code, nom_vernaculaire FROM taxon").
     // 3. Parcourir le ResultSet avec while (rs.next()) et, pour chaque ligne, ajouter à `lignes`
     //    la chaîne : rs.getString("code") + " - " + rs.getString("nom_vernaculaire").
-
+    try (Statement st = connexion.createStatement();
+        ResultSet rs = st.executeQuery("SELECT code,nom_vernaculaire FROM taxon")) {
+      while (rs.next()) {
+        lignes.add(rs.getString("code") + " - " + rs.getString("nom_vernaculaire"));
+      }
+    }
     return lignes;
   }
 }
